@@ -1,0 +1,203 @@
+@import "colors.css";
+
+* {
+  font-family: "SFMono-Bold", "iOSBattery";
+  font-size: 13px;
+  font-weight: 700;
+  min-height: 0;
+  border: none;
+}
+
+window#waybar {
+  background: transparent;
+  color: @on_surface;
+  min-height: 36px;
+}
+
+/* ── GLASS MIXIN (applied to all pills) ── */
+#workspaces,
+#clock,
+#custom-window,
+#custom-media,
+#network,
+#pulseaudio,
+#custom-battery,
+#custom-tlp,
+#custom-screenrecord {
+  background: @glass_bg;
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 0 @glass_specular,
+    inset -1px 0 0 0 alpha(@glass_specular, 0.15),
+    inset 0 -1px 0 0 @glass_inner_shadow,
+    0 2px 12px 0 alpha(@primary, 0.08);
+  border: 1px solid @glass_border;
+  margin: 4px 4px;
+  padding: 0 14px;
+  min-height: 28px;
+  color: @surface;
+}
+
+/* ── WORKSPACES ── */
+#workspaces {
+  padding: 0 4px;
+}
+
+#workspaces button {
+  color: @on_surface_variant;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 999px;
+  padding: 0 8px;
+  min-height: 28px;
+}
+
+#workspaces button.active,
+#workspaces button.focused {
+  color: @primary;
+  background: transparent;
+}
+
+/* ── WINDOW TITLE ── */
+#custom-window {
+  margin: 4px 4px 0 16px;
+  color: @primary;
+}
+
+#custom-window.empty {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* ── CLOCK ── */
+#clock {
+  color: @primary;
+}
+
+/* ── MEDIA ── */
+#custom-media {
+  margin: 4px 4px 0 8px;
+  color: @primary;
+  transition: opacity 45s ease;
+  opacity: 1;
+}
+
+#custom-media.playing {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+#custom-media.paused {
+  opacity: 1;
+  animation: fade-paused 45s ease 120s forwards;
+}
+
+#custom-media.hidden {
+  opacity: 0;
+  transition: opacity 45s ease;
+}
+
+@keyframes fade-paused {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ── NETWORK ── */
+#network {
+  color: @primary;
+}
+
+/* ── AUDIO PILL (pulseaudio + slider combined) ── */
+#volume {
+  background: @glass_bg;
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 0 @glass_specular,
+    inset -1px 0 0 0 alpha(@glass_specular, 0.15),
+    inset 0 -1px 0 0 @glass_inner_shadow,
+    0 2px 12px 0 alpha(@primary, 0.08);
+  border: 1px solid @glass_border;
+  margin: 4px 4px;
+  padding: 0 4px;
+  min-height: 28px;
+}
+
+#volume #pulseaudio,
+#volume #pulseaudio-slider {
+background: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  color: @primary;
+}
+
+#pulseaudio-slider slider {
+  background: @primary;
+  border: none;
+  box-shadow: none;
+  min-width: 14px;
+  min-height: 14px;
+  border-radius: 999px;
+  opacity: 1;
+}
+
+#custom-battery {
+  font-family: "iOSBattery", "SFMono-Bold";
+  font-size: 16px;
+  color: white;
+}
+
+#custom-battery.charging { color: #4CD964; }
+#custom-battery.normal   { color: white; }
+#custom-battery.critical { color: #FF3B30; }
+
+#custom-screenrecord.recording {
+  color: #FF3B30;
+}
+
+#custom-screenrecord.idle {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  opacity: 0;
+  font-size: 0;
+}
+
+/* ── TLP ── */
+#custom-tlp {
+  font-size: 16px;
+  padding: 0 14px;
+  min-width: 36px;
+  min-height: 22px;
+}
+
+#custom-tlp.low-power   { color: @primary; }
+#custom-tlp.balanced    { color: @secondary; }
+#custom-tlp.performance { color: @tertiary; }
+
+
+
+
+
+#custom-left-sidebar-toggle {
+  background: @glass_bg;
+  background-image: url("/home/worst_poet/.config/waybar/icons/sidebar-toggle.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  border-radius: 999px;
+  border: 1px solid @glass_border;
+  box-shadow: inset 0 1px 0 0 @glass_specular;
+  margin: 4px 4px;
+  min-width: 44px;
+  min-height: 28px;
+  padding: 0;
+}

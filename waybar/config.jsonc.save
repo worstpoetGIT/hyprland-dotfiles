@@ -1,0 +1,124 @@
+{
+  "layer": "top",
+  "position": "top",
+
+  "modules-left": ["hyprland/window", "cpu", "memory", "disk", "temperature", "custom/gpu"],
+  "modules-center": ["hyprland/workspaces", "clock", "custom/brightness", "custom/screenshot"],
+  "modules-right": ["custom/bluetooth", "network", "pulseaudio", "pulseaudio/slider", "battery","power-profiles-daemon"],
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 60,
+    "separate-outputs": true
+  },
+
+  "clock": {
+  "interval": 1,
+  "tooltip": false,
+  "format": "{:%H:%M:%S}",
+  "format-alt": "{:%a, %d %b %Y}",
+},
+
+"custom/brightness": {
+  "exec": "brightnessctl -m | awk -F, '{gsub(/%/,\"\",$4); b=$4; r=int((b+2.5)/5)*5; print \"󰃠   \" r}'",
+  "interval": 1,
+  "tooltip": false
+},
+
+"custom/screenshot": {
+    "format": "",
+    "tooltip": "Screenshot",
+    "on-click": "hyprshot -m region",
+    "on-click
+},
+
+"network": {
+    "format-wifi": "    {essid}",
+    "format-ethernet": "󰈀   Wired",
+    "format-disconnected": "󰖪   Offline",
+    "tooltip": false,
+    "on-click": "~/.config/waybar/scripts/wifi-menu.sh"
+  },
+
+"pulseaudio": {
+  "format": "󰋋,   {volume}%",
+  "format-muted": "󰋋   muted",
+  "tooltip": false,
+  "max-volume": 150
+},
+
+"pulseaudio/slider": {
+  "min": 0,
+  "max": 150,
+  "orientation": "horizontal"
+},
+
+  "custom/bluetooth": {
+    "exec": "~/.config/waybar/scripts/bluetooth-status.sh",
+    "interval": 2,
+    "signal": 8,
+    "return-type": "json",
+    "on-click": "~/.config/waybar/scripts/bluetooth-toggle.sh",
+    "on-click-right": "blueman-manager"
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}  {capacity}",
+    "format-charging": "󰂄  {capacity}",
+    "format-plugged": "󰂄   {capacity}",
+    "format-full": "󰁹   100",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰁹"],
+    "tooltip": false
+  },
+
+"power-profiles-daemon": {
+  "format": "{icon}",
+  "tooltip": false,
+  "format-icons": {
+    "default": "",
+    "performance": "󰓅",
+    "balanced": "󰾅",
+    "power-saver": "󰓃"
+  }
+},
+
+"cpu": {
+  "format": "󰘚  {usage}%",
+  "tooltip": false
+},
+
+"memory": {
+  "format": "󰍛  {}%",
+  "tooltip": false
+},
+
+"disk": {
+  "interval": 30,
+  "format": "󰋊  {percentage_used}%",
+  "path": "/",
+  "tooltip": false
+},
+
+"temperature": {
+  "critical-threshold": 80,
+  "format": "󰔏  {temperatureC}°C",
+  "tooltip": false
+},
+
+  "format": "{icon}  {capacity}%",
+  "format-charging": "󰂄  {capacity}%",
+  "format-plugged": "󰂄  {capacity}%",
+  "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰁹"],
+  "tooltip": false
+},
+
+"custom/gpu": {
+  "exec": "~/.config/waybar/scripts/gpu-status.sh",
+  "interval": 2,
+  "return-type": "json",
+  "tooltip": false
+}
+}

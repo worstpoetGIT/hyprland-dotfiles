@@ -1,0 +1,31 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["custom/left-sidebar-toggle"],
+  "modules-center": ["hyprland/workspaces", "custom/screenrecord"],
+  "modules-right": ["custom/battery"],
+
+  "custom/left-sidebar-toggle": {
+    "format": " ",
+    "tooltip": false,
+    "on-click": "ags toggle left-sidebar"
+  },
+
+  "custom/battery": {
+    "exec": "~/.config/waybar/scripts/battery.sh",
+    "interval": 10,
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "ags toggle right-sidebar"
+  },
+
+  "custom/screenrecord": {
+    "exec": "~/.config/waybar/scripts/screenrecord-indicator.sh",
+    "interval": 2,
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "~/.config/hypr/scripts/screenrecord-toggle.sh"
+  }
+}
