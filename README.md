@@ -38,7 +38,7 @@
 
 ### Lockscreen
 
-<img width="1920" height="1200" alt="3" src="https://github.com/user-attachments/assets/ab73dda9-3ba0-4dde-9c07-9c2d9c637097" />
+<img width="1920" height="1200" alt="3" src="https://github.com/user-attachments/assets/0a9e7ec4-f2c0-47be-88c6-c9d283b5c0ec" />
 
 *hyprlock on default config — analog clock, date, user avatar, and password field. Triggered automatically by hypridle after idle timeout*
 
