@@ -1,0 +1,46 @@
+[config]
+reload_apps = true
+
+[templates.waybar-colors]
+input_path = "~/.config/matugen/templates/waybar-colors.css"
+output_path = "~/.config/waybar/colors.css"
+
+[templates.rofi-colors]
+input_path = "~/.config/matugen/templates/rofi-colors.rasi"
+output_path = "~/.config/rofi/colors.rasi"
+
+[templates.fuzzel]
+input_path = "~/.config/matugen/templates/fuzzel.ini"
+output_path = "~/.config/fuzzel/fuzzel.ini"
+
+[templates.vscodium-theme]
+input_path = "~/.config/matugen/templates/vscodium-theme.json"
+output_path = "~/.vscode-oss/extensions/matugen-theme/themes/matugen-dark.json"
+
+[templates.ags-colors]
+input_path = "~/.config/matugen/templates/ags-colors.css"
+output_path = "~/.config/ags/style/colors.css"
+
+[templates.sidebar-icon]
+input_path = "~/.config/matugen/templates/sidebar-icon.svg"
+output_path = "~/.config/waybar/icons/sidebar-toggle.svg"
+
+[templates.swayosd]
+input_path = "~/.config/matugen/templates/swayosd.css"
+output_path = "~/.cache/swayosd-style.css"
+
+[templates.dunst]
+input_path = "~/.config/matugen/templates/dunstrc"
+output_path = "~/.config/dunst/dunstrc"
+
+[templates.fastfetch]
+input_path = "~/.config/matugen/templates/fastfetch.jsonc"
+output_path = "~/.config/fastfetch/config.jsonc"
+
+[templates.sddm-colors]
+input_path = "~/.config/matugen/templates/sddm-colors.json"
+output_path = "~/.cache/sddm-colors.json"
+
+[templates.yazi]
+input_path = '~/.config/matugen/templates/yazi.toml'
+output_path = '~/.config/yazi/theme.toml'

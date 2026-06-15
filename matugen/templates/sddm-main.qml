@@ -1,0 +1,521 @@
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import Qt5Compat.GraphicalEffects
+import SddmComponents 2.0
+
+Rectangle {
+    id: root
+    width: Screen.width
+    height: Screen.height
+    color: "{{colors.surface.default.hex}}"
+
+ // ─── Colors ───────────────────────────────────────────────────────────────
+
+readonly property color m3Primary:       "{{colors.primary.default.hex}}"
+readonly property color m3PrimaryDark:   "{{colors.primary_container.default.hex}}"
+readonly property color m3Surface:       "{{colors.surface.default.hex}}"
+readonly property color m3SurfaceVar:    "{{colors.surface_variant.default.hex}}"
+readonly property color m3OnSurface:     "{{colors.on_surface.default.hex}}"
+readonly property color m3Outline:       "{{colors.outline.default.hex}}"
+readonly property color m3Error:         "{{colors.error.default.hex}}"
+readonly property color glassWhite:      "#18FFFFFF"
+readonly property color glassBorder:     "{{colors.primary.default.hex}}"
+
+    // ─── Keyboard / session ───────────────────────────────────────────────────
+    Connections {
+        target: sddm
+        function onLoginSucceeded() { loginAnim.start() }
+        function onLoginFailed()    { shakeAnim.start(); passwordField.clear(); errorMsg.visible = true }
+    }
+
+    // ─── Background ───────────────────────────────────────────────────────────
+    Image {
+        id: bgImage
+        anchors.fill: parent
+        source: config.background !== undefined ? "background.jpg" : ""
+        fillMode: Image.PreserveAspectCrop
+        smooth: true
+        asynchronous: true
+    }
+
+    // Blur
+    FastBlur {
+        anchors.fill: bgImage
+        source: bgImage
+        radius: 64
+    }
+
+    // Dark overlay
+    Rectangle {
+        anchors.fill: parent
+        color: "#88050D1A"
+    }
+
+    // Subtle animated gradient orb behind card
+    Rectangle {
+        id: glowOrb
+        width: 520; height: 520
+        radius: 260
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: 40
+        color: "transparent"
+        layer.enabled: true
+        layer.effect: Glow {
+            radius: 120
+            samples: 60
+            color: root.m3Primary
+            spread: 0.05
+        }
+        SequentialAnimation on opacity {
+            loops: Animation.Infinite
+            NumberAnimation { to: 0.18; duration: 3000; easing.type: Easing.InOutSine }
+            NumberAnimation { to: 0.08; duration: 3000; easing.type: Easing.InOutSine }
+        }
+    }
+
+    // ─── Main card ────────────────────────────────────────────────────────────
+    Rectangle {
+        id: card
+        width: 420
+        anchors.centerIn: parent
+        height: cardColumn.implicitHeight + 72
+        radius: 32
+        color: root.glassWhite
+        border.color: root.glassBorder
+        border.width: 1.5
+        layer.enabled: true
+        layer.effect: DropShadow {
+            radius: 48
+            samples: 60
+            color: "#AA000000"
+            verticalOffset: 12
+        }
+
+        // Glass shimmer top edge
+        Rectangle {
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 1.5
+            height: 1
+            radius: 32
+            color: "#554FC3F7"
+        }
+
+        ColumnLayout {
+            id: cardColumn
+            anchors.centerIn: parent
+            width: parent.width - 64
+            spacing: 0
+
+            // ── Avatar ────────────────────────────────────────────────────────
+            Item {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 0
+                width: 96; height: 96
+
+                Rectangle {
+                    id: avatarRing
+                    anchors.centerIn: parent
+                    width: 104; height: 104
+                    radius: 52
+                    color: "transparent"
+                    border.color: root.m3Primary
+                    border.width: 2.5
+                    layer.enabled: true
+                    layer.effect: Glow {
+                        radius: 12
+                        samples: 24
+                        color: root.m3Primary
+                        spread: 0.1
+                    }
+                    SequentialAnimation on border.width {
+                        loops: Animation.Infinite
+                        NumberAnimation { to: 3.5; duration: 2000; easing.type: Easing.InOutSine }
+                        NumberAnimation { to: 2.5; duration: 2000; easing.type: Easing.InOutSine }
+                    }
+                }
+
+                Image {
+                    id: avatarImg
+                    anchors.centerIn: parent
+                    width: 92; height: 92
+                    source: userModel.count > 0 ? userModel.data(userModel.index(userList.currentIndex, 0), Qt.UserRole + 3) : ""
+                    fillMode: Image.PreserveAspectCrop
+                    smooth: true
+                    layer.enabled: true
+                    layer.effect: OpacityMask {
+                        maskSource: Rectangle {
+                            width: 92; height: 92
+                            radius: 46
+                        }
+                    }
+                }
+            }
+
+            // ── Username ──────────────────────────────────────────────────────
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 20
+                text: userModel.count > 0 ? userModel.data(userModel.index(userList.currentIndex, 0), Qt.DisplayRole) : "user"
+                color: root.m3OnSurface
+                font.pixelSize: 22
+                font.weight: Font.Medium
+                font.family: "Noto Sans"
+                font.letterSpacing: 0.5
+            }
+
+            // ── Clock ─────────────────────────────────────────────────────────
+            Text {
+                id: clockTime
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 28
+                color: root.m3Primary
+                font.pixelSize: 52
+                font.weight: Font.Light
+                font.family: "Noto Sans"
+                font.letterSpacing: -1
+                layer.enabled: true
+                layer.effect: Glow {
+                    radius: 8
+                    samples: 16
+                    color: root.m3Primary
+                    spread: 0.05
+                }
+            }
+
+            Text {
+                id: clockDate
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 4
+                color: "#99E8F4FD"
+                font.pixelSize: 13
+                font.family: "Noto Sans"
+                font.letterSpacing: 1.5
+            }
+
+            Timer {
+                interval: 1000
+                running: true
+                repeat: true
+                triggeredOnStart: true
+                onTriggered: {
+                    var now = new Date()
+                    var h = now.getHours().toString().padStart(2, "0")
+                    var m = now.getMinutes().toString().padStart(2, "0")
+                    var s = now.getSeconds().toString().padStart(2, "0")
+                    clockTime.text = h + ":" + m + ":" + s
+                    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+                    var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+                    clockDate.text = days[now.getDay()].toUpperCase() + "  ·  " + months[now.getMonth()].toUpperCase() + " " + now.getDate() + "  ·  " + now.getFullYear()
+                }
+            }
+
+            // ── Divider ───────────────────────────────────────────────────────
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.topMargin: 28
+                height: 1
+                color: root.glassBorder
+            }
+
+            // ── Password dots row ─────────────────────────────────────────────
+            // Material 3 icons appear as you type
+            Item {
+                Layout.fillWidth: true
+                Layout.topMargin: 28
+                height: 56
+
+                // Outlined container
+                Rectangle {
+                    anchors.fill: parent
+                    radius: 16
+                    color: root.m3SurfaceVar
+                    border.color: passwordField.activeFocus ? root.m3Primary : root.m3Outline
+                    border.width: passwordField.activeFocus ? 2 : 1.5
+
+                    Behavior on border.color { ColorAnimation { duration: 200 } }
+                    Behavior on border.width { NumberAnimation { duration: 200 } }
+
+                    layer.enabled: passwordField.activeFocus
+                    layer.effect: Glow {
+                        radius: 8
+                        samples: 16
+                        color: root.m3Primary
+                        spread: 0.05
+                    }
+                }
+
+                // Key icon on left
+                Text {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 16
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "🔑"
+                    font.pixelSize: 18
+                    opacity: 0.85
+                }
+
+                // M3 icon dots — one per character typed
+                Row {
+                    id: iconRow
+                    anchors.centerIn: parent
+                    spacing: 10
+
+                    property var icons: ["lock","shield","key","star","bolt","diamond","crown","flame","gem","moon"]
+                    property int count: passwordField.text.length
+
+                    Repeater {
+                        model: iconRow.count
+                        delegate: Item {
+                            width: 28; height: 28
+                            Rectangle {
+                                anchors.centerIn: parent
+                                width: 28; height: 28
+                                radius: 8
+                                color: Qt.rgba(79/255, 195/255, 247/255, 0.18)
+                                border.color: Qt.rgba(79/255, 195/255, 247/255, 0.5)
+                                border.width: 1
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    font.pixelSize: 13
+                                    color: root.m3Primary
+                                    // rotating M3-style symbols
+                                    property var syms: ["◆","▲","●","★","⬟","✦","⬡","◉","▶","⬢"]
+                                    text: syms[index % syms.length]
+                                }
+                            }
+
+                            // Pop-in animation
+                            scale: 0
+                            Component.onCompleted: {
+                                scaleAnim.start()
+                            }
+                            NumberAnimation {
+                                id: scaleAnim
+                                target: parent
+                                property: "scale"
+                                from: 0; to: 1
+                                duration: 180
+                                easing.type: Easing.OutBack
+                            }
+                        }
+                    }
+                }
+
+                // Actual hidden password input
+                TextInput {
+                    id: passwordField
+                    anchors.fill: parent
+                    anchors.leftMargin: 48
+                    anchors.rightMargin: 16
+                    echoMode: TextInput.Password
+                    passwordCharacter: " "
+                    color: "transparent"
+                    selectionColor: "transparent"
+                    selectedTextColor: "transparent"
+                    font.pixelSize: 18
+                    focus: true
+                    cursorVisible: false
+
+                    Keys.onReturnPressed: doLogin()
+                    Keys.onEnterPressed: doLogin()
+                    Keys.onEscapePressed: { clear(); errorMsg.visible = false }
+                }
+            }
+
+            // ── Error message ─────────────────────────────────────────────────
+            Text {
+                id: errorMsg
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 10
+                text: "Incorrect password — try again"
+                color: root.m3Error
+                font.pixelSize: 12
+                font.family: "Noto Sans"
+                visible: false
+                opacity: visible ? 1 : 0
+                Behavior on opacity { NumberAnimation { duration: 300 } }
+            }
+
+            // ── Fingerprint hint ──────────────────────────────────────────────
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: errorMsg.visible ? 8 : 18
+                spacing: 8
+
+                Rectangle {
+                    width: 36; height: 36
+                    radius: 18
+                    color: Qt.rgba(79/255, 195/255, 247/255, 0.12)
+                    border.color: Qt.rgba(79/255, 195/255, 247/255, 0.3)
+                    border.width: 1
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "⌘"
+                        font.pixelSize: 16
+                        color: root.m3Primary
+                    }
+
+                    SequentialAnimation on opacity {
+                        loops: Animation.Infinite
+                        NumberAnimation { to: 0.4; duration: 1500; easing.type: Easing.InOutSine }
+                        NumberAnimation { to: 1.0; duration: 1500; easing.type: Easing.InOutSine }
+                    }
+                }
+
+                Text {
+                    text: "Touch fingerprint sensor to unlock"
+                    color: "#66E8F4FD"
+                    font.pixelSize: 12
+                    font.family: "Noto Sans"
+                    font.letterSpacing: 0.3
+                }
+            }
+
+            // ── Login button ──────────────────────────────────────────────────
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.topMargin: 24
+                Layout.bottomMargin: 0
+                height: 52
+                radius: 16
+                color: loginMouseArea.pressed ? root.m3PrimaryDark : root.m3Primary
+
+                Behavior on color { ColorAnimation { duration: 150 } }
+
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    radius: 16
+                    samples: 24
+                    color: Qt.rgba(79/255, 195/255, 247/255, 0.4)
+                    verticalOffset: 4
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "UNLOCK"
+                    color: "#0A0F1E"
+                    font.pixelSize: 13
+                    font.weight: Font.Bold
+                    font.family: "Noto Sans"
+                    font.letterSpacing: 2.5
+                }
+
+                MouseArea {
+                    id: loginMouseArea
+                    anchors.fill: parent
+                    onClicked: doLogin()
+
+                    Rectangle {
+                        id: ripple
+                        width: 0; height: 0
+                        radius: width / 2
+                        color: "#22000000"
+                        anchors.centerIn: parent
+                        visible: false
+                    }
+
+                    onPressed: {
+                        ripple.visible = true
+                        rippleAnim.start()
+                    }
+
+                    ParallelAnimation {
+                        id: rippleAnim
+                        NumberAnimation { target: ripple; property: "width";  from: 0; to: 300; duration: 400; easing.type: Easing.OutQuad }
+                        NumberAnimation { target: ripple; property: "height"; from: 0; to: 300; duration: 400; easing.type: Easing.OutQuad }
+                        NumberAnimation { target: ripple; property: "opacity"; from: 0.3; to: 0; duration: 400 }
+                    }
+                }
+            }
+        }
+    }
+
+    // ─── Shake animation on wrong password ────────────────────────────────────
+    SequentialAnimation {
+        id: shakeAnim
+        NumberAnimation { target: card; property: "x"; to: card.x - 12; duration: 60 }
+        NumberAnimation { target: card; property: "x"; to: card.x + 12; duration: 60 }
+        NumberAnimation { target: card; property: "x"; to: card.x - 8;  duration: 60 }
+        NumberAnimation { target: card; property: "x"; to: card.x + 8;  duration: 60 }
+        NumberAnimation { target: card; property: "x"; to: card.x;      duration: 60 }
+    }
+
+    // ─── Login success fade ───────────────────────────────────────────────────
+    NumberAnimation {
+        id: loginAnim
+        target: root
+        property: "opacity"
+        to: 0
+        duration: 600
+        easing.type: Easing.InQuad
+    }
+
+    // ─── Hidden user list (required by SDDM) ──────────────────────────────────
+    ListView {
+        id: userList
+        model: userModel
+        visible: false
+        currentIndex: 0
+    }
+
+    // ─── Session selector (hidden, defaults to Hyprland) ──────────────────────
+    ListView {
+        id: sessionList
+        model: sessionModel
+        visible: false
+        currentIndex: {
+            for (var i = 0; i < sessionModel.count; i++) {
+                if (sessionModel.data(sessionModel.index(i, 0), Qt.DisplayRole).toLowerCase().indexOf("hyprland") !== -1)
+                    return i
+            }
+            return 0
+        }
+    }
+
+    // ─── Login function ───────────────────────────────────────────────────────
+    function doLogin() {
+        errorMsg.visible = false
+        var username = userModel.data(userModel.index(userList.currentIndex, 0), Qt.DisplayRole)
+        var session  = sessionModel.data(sessionModel.index(sessionList.currentIndex, 0), Qt.UserRole + 1)
+        sddm.login(username, passwordField.text, sessionList.currentIndex)
+    }
+
+    // ─── Top bar: session + layout ────────────────────────────────────────────
+    RowLayout {
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 20
+        height: 48
+
+        Text {
+            text: "Hyprland"
+            color: "#66E8F4FD"
+            font.pixelSize: 12
+            font.family: "Noto Sans"
+            font.letterSpacing: 1
+        }
+
+        Item { Layout.fillWidth: true }
+
+        Text {
+            id: topClock
+            color: "#66E8F4FD"
+            font.pixelSize: 12
+            font.family: "Noto Sans"
+        }
+
+        Timer {
+            interval: 1000; running: true; repeat: true; triggeredOnStart: true
+            onTriggered: {
+                var now = new Date()
+                topClock.text = now.getHours().toString().padStart(2,"0") + ":" + now.getMinutes().toString().padStart(2,"0")
+            }
+        }
+    }
+}
