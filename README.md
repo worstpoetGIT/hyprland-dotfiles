@@ -13,9 +13,14 @@
 
 ### Desktop
 
+<img width="1920" height="1200" alt="5" src="https://github.com/user-attachments/assets/094fa22a-5c8f-448d-b741-5add425ee7d7" />
+
+
 *Clean green-themed desktop with custom dock, workspace indicators, and left/right app panels*
 
 ### Sidebar Widgets
+
+<img width="1920" height="1200" alt="1" src="https://github.com/user-attachments/assets/36cda5d2-fda9-41af-823b-b333a040c6fc" />
 
 *Right sidebar showing the clock, calendar, Wi-Fi status, Bluetooth, and power profile — all triggered from Waybar*
 
