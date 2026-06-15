@@ -26,13 +26,19 @@
 
 ### Screenshot Menu
 
+<img width="1920" height="1200" alt="5" src="https://github.com/user-attachments/assets/49ffffd6-e6f5-45e2-b2b4-3821342289a6" />
+
 *Custom screenshot picker via `screenshot-menu.sh` — choose between Region, Window, or Monitor capture*
 
 ### WiFi Menu
 
+<img width="1870" height="1179" alt="2" src="https://github.com/user-attachments/assets/bf314211-eb6a-4dd1-8bdd-277cab74abcb" />
+
 *Rofi-powered WiFi network picker, launched directly from the Waybar WiFi module*
 
 ### Lockscreen
+
+![3](https://github.com/user-attachments/assets/21a158af-d1c1-4c80-9864-54fec85f15cc)
 
 *hyprlock on default config — analog clock, date, user avatar, and password field. Triggered automatically by hypridle after idle timeout*
 
