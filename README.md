@@ -13,27 +13,22 @@
 
 ### Desktop
 
-![Desktop]
 *Clean green-themed desktop with custom dock, workspace indicators, and left/right app panels*
 
 ### Sidebar Widgets
 
-![Sidebar](./assets/sidebar.png)
 *Right sidebar showing the clock, calendar, Wi-Fi status, Bluetooth, and power profile — all triggered from Waybar*
 
 ### Screenshot Menu
 
-![Screenshot Menu](./assets/screenshot-menu.png)
 *Custom screenshot picker via `screenshot-menu.sh` — choose between Region, Window, or Monitor capture*
 
 ### WiFi Menu
 
-![WiFi Menu](./assets/wifi-menu.png)
 *Rofi-powered WiFi network picker, launched directly from the Waybar WiFi module*
 
 ### Lockscreen
 
-![Lockscreen](./assets/lockscreen.png)
 *hyprlock on default config — analog clock, date, user avatar, and password field. Triggered automatically by hypridle after idle timeout*
 
 -----
@@ -164,6 +159,11 @@ Colors stay in sync with your wallpaper theme automatically via `update-sddm-col
 |`sddm-main.qm`     |SDDM main theme                |
 |`swayosd.css`      |SwayOSD (volume/brightness OSD)|
 |`vscodium-theme`   |VSCodium editor                |
+![IMG_6486](https://github.com/user-attachments/assets/3a389cbe-c1d7-4eb2-abb8-63ec9cb0cee2)
+
+<img width="1920" height="1200" alt="3" src="https://github.com/user-attachments/assets/c83fdc74-4e4d-4573-9808-9d6c5bf21991" />
+<img width="1920" height="1200" alt="2" src="https://github.com/user-attachments/assets/6049f538-35f9-43d1-8f73-77db6b5a05a3" />
+<img width="1920" height="1200" alt="1" src="https://github.com/user-attachments/assets/67e5b209-52fe-4629-ba2c-bdf9ab60566e" />
 |`waybar-colors.css`|Waybar status bar              |
 |`yazi.toml`        |Yazi terminal file manager     |
 
