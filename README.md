@@ -13,7 +13,7 @@
 
 ### Desktop
 
-![Desktop](./assets/desktop.png)
+![Desktop]
 *Clean green-themed desktop with custom dock, workspace indicators, and left/right app panels*
 
 ### Sidebar Widgets
