@@ -26,7 +26,7 @@
 
 ### Screenshot Menu
 
-<img width="1920" height="1200" alt="5" src="https://github.com/user-attachments/assets/49ffffd6-e6f5-45e2-b2b4-3821342289a6" />
+<img width="1865" height="1179" alt="4" src="https://github.com/user-attachments/assets/01788c71-8c54-48f8-9470-fe0e85fb740b" />
 
 *Custom screenshot picker via `screenshot-menu.sh` — choose between Region, Window, or Monitor capture*
 
