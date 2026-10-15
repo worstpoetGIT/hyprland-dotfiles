@@ -12,8 +12,8 @@
     urgent:             {{colors.tertiary.default.hex}};
     background-color:   transparent;
     text-color:         #ffffff;
-    glass-bg:           {{colors.surface.default.hex}}F2;
-    glass-bg-strong:    {{colors.surface_container.default.hex}}F5;
-    glass-border:       #00000050;
-    glass-specular:     #00000030;
+    glass-bg:           {{colors.primary_container.default.hex}}40;
+    glass-bg-strong:    {{colors.primary_container.default.hex}}59;
+    glass-border:       {{colors.on_surface.default.hex}}14;
+    glass-specular:     #ffffff73;
 }

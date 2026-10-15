@@ -1,0 +1,30 @@
+font=SF Mono Bold 11
+background-color={{colors.primary_container.default.hex}}cc
+text-color={{colors.on_surface.default.hex}}ee
+border-color=#ffffff1a
+border-size=1
+border-radius=24
+width=360
+height=110
+padding=16,20
+margin=12
+default-timeout=5000
+ignore-timeout=1
+anchor=top-right
+max-visible=5
+layer=overlay
+progress-color=over {{colors.primary.default.hex}}55
+icon-border-radius=14
+
+[urgency=low]
+border-color=#ffffff12
+background-color={{colors.primary_container.default.hex}}b3
+
+[urgency=normal]
+border-color=#ffffff1a
+background-color={{colors.primary_container.default.hex}}cc
+
+[urgency=critical]
+border-color={{colors.tertiary.default.hex}}55
+background-color={{colors.primary_container.default.hex}}e6
+default-timeout=0

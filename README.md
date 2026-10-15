@@ -1,6 +1,6 @@
 # 🌿 hyprland-dotfiles
 
-> My personal Arch Linux setup — Hyprland, Waybar, hyprlock, SDDM, and matugen, all in one place.
+> My personal Arch Linux setup — Hyprland (Lua config), Waybar, AGS popups, hyprlock, SDDM, and matugen, all in one place.
 
 ![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
 ![Hyprland](https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=wayland&logoColor=black)
@@ -48,15 +48,17 @@
 
 ### 🪟 Hyprland (`hypr/`)
 
-The core window manager config, split across multiple files to keep things clean.
+The core window manager config. Since Hyprland 0.55 the main config is written in **Lua** (`hyprland.lua`), replacing the old `hyprland.conf` / `hyprland-gui.conf` / `colors.conf` split.
 
-|File               |What it does                                                                                 |
-|-------------------|---------------------------------------------------------------------------------------------|
-|`hyprland.conf`    |Main config — keybinds, window rules, monitor setup, startup apps                            |
-|`hyprland-gui.conf`|GUI-specific settings, animations, and decoration options                                    |
-|`colors.conf`      |Centralised color variables sourced by other configs. Edit here to retheme everything at once|
-|`hyprpaper.conf`   |Wallpaper setup via hyprpaper — defines which wallpaper loads on which monitor               |
-|`hypridle.conf`    |Idle management — dims screen, locks with hyprlock, suspends after configurable timeouts     |
+|File                      |What it does                                                                                     |
+|--------------------------|-------------------------------------------------------------------------------------------------|
+|`hyprland.lua`            |Main config — keybinds, window rules, monitors, animations, startup apps. Active border color is read from matugen's palette|
+|`hyprpaper.conf`          |Wallpaper setup via hyprpaper — defines which wallpaper loads on which monitor                   |
+|`hypridle.conf`           |Idle management — dims screen, locks with hyprlock, suspends after configurable timeouts         |
+|`hyprlock.conf`           |Lockscreen layout                                                                                |
+|`shaders/`                |Screen shader for "Reduce White Point"                                                           |
+|`toggle-fullscreen-all.sh`|Toggles fullscreen across all windows                                                            |
+|`waybar-fullscreen.sh`    |Hides/shows Waybar when a window goes fullscreen                                                 |
 
 -----
 
@@ -67,17 +69,21 @@ Shell and Python scripts wired to keybinds or Waybar buttons.
 |Script                    |What it does                                                         |
 |--------------------------|---------------------------------------------------------------------|
 |`brightness.sh`           |Controls screen brightness via keyboard shortcuts                    |
+|`dock-resume.sh`          |Restores each monitor's workspace after docking/undocking            |
+|`fan-gaming-watch.sh`     |Raises the ThinkPad fan level while a game is running                |
 |`control-panel.py`        |Launches a quick-access control panel UI                             |
 |`fullscreen-waybar.sh`    |Toggles Waybar visibility when going fullscreen                      |
+|`pseudo-maximize.sh`      |Maximize that keeps Waybar visible, flush to the other edges         |
 |`restore-wallpaper.sh`    |Restores the current wallpaper after a reload or crash               |
 |`screenrecord-toggle.sh`  |Starts and stops screen recording                                    |
 |`screenshot-menu.sh`      |Rofi-based screenshot picker — Region, Window, or Monitor            |
 |`session-start.sh`        |Runs on Hyprland startup — launches tray apps, sets environment, etc.|
-|`toggle-black.sh`         |Toggles a solid black overlay, useful for presentations              |
-|`toggle-fullscreen-all.sh`|Toggles fullscreen across all windows                                |
+|`set-warmth.sh`           |Color temperature for the laptop panel only (wlsunset)               |
+|`set-white-point.sh`      |Turns Reduce White Point on/off (used by the AGS Display popup)      |
+|`toggle-white-point.sh`   |Toggles Reduce White Point on all monitors                           |
 |`update-sddm-colors.py`   |Pushes your current matugen palette to SDDM’s theme                  |
+|`volume-adjust.sh`        |Changes volume and flashes the level in Waybar (replaces swayosd)    |
 |`wallpaper-menu.sh`       |Interactive wallpaper picker                                         |
-|`waybar-fullscreen.sh`    |Hides/shows Waybar when a window goes fullscreen                     |
 
 -----
 
@@ -98,18 +104,21 @@ A heavily customised status bar with dynamic modules and its own script collecti
 
 |Script                     |What it does                                                       |
 |---------------------------|-------------------------------------------------------------------|
+|`accent-dot.py`            |Backend for the accent picker — lists matugen's source colors for the current wallpaper and applies the chosen one|
+|`audio-status.sh`          |Volume icon; shows the level for ~2s after a volume key press      |
 |`battery.sh`               |Outputs battery percentage and status                              |
 |`batterypng.py`            |Generates a battery icon as PNG using the custom font              |
 |`build_battery_font_ff.py` |Builds the battery font (Firefox-compatible)                       |
 |`build_colr_battery.py`    |Builds a colour-layered battery icon                               |
 |`bluetooth.sh`             |Shows Bluetooth status and connected device name                   |
-|`brightness.sh`            |Outputs current brightness level                                   |
+|`clock.sh`                 |Center clock with date and a second (India) time zone              |
+|`display-status.sh`        |Brightness icon; shows the level for ~2s after a brightness key press|
 |`gpu-status.sh`            |Shows current GPU usage and temperature                            |
+|`kb-battery.sh`            |Battery level of the wireless keyboard                             |
 |`launch.sh`                |Generic launcher used by several Waybar buttons                    |
 |`media.sh`                 |Displays currently playing media via playerctl                     |
 |`power-profile-menu.sh`    |Rofi menu to switch power profiles (performance, balanced, battery)|
 |`record.sh`                |Handles recording state for the recording indicator module         |
-|`right-sidebar-toggle.sh`  |Toggles the right sidebar panel                                    |
 |`screenrecord-indicator.sh`|Shows a live dot in Waybar when screen recording is active         |
 |`screenshot.sh`            |Triggers a screenshot directly from the bar                        |
 |`tlp-cycle.sh`             |Cycles through TLP power profiles                                  |
@@ -121,9 +130,34 @@ A heavily customised status bar with dynamic modules and its own script collecti
 
 -----
 
+### 🧩 AGS popups (`ags/`)
+
+[AGS](https://github.com/Aylur/ags) (GTK 4) powers the popups that open from Waybar modules. Colors come from matugen (`style/colors.css`).
+
+|Popup               |What it does                                                         |
+|--------------------|---------------------------------------------------------------------|
+|`AccentPopup`       |**Accent picker** — choose which of matugen's source colors themes the desktop, remembered per wallpaper|
+|`AudioPopup`        |Output device and volume                                             |
+|`BatteryPopup`      |Battery health, time remaining, power profile                        |
+|`BluetoothPopup`    |Paired/connected devices                                             |
+|`CalendarPopup`     |Calendar from the clock                                              |
+|`ClaudeStatsPopup`  |Claude Code usage from a self-hosted dashboard (set your own URL)    |
+|`DisplayPopup`      |Brightness, warmth, Reduce White Point                               |
+|`LocalSendPopup`    |Send files to LocalSend devices (`scripts/localsend_daemon.py`)      |
+|`SessionPopup`      |Lock / logout / reboot / shutdown                                    |
+|`TailscalePopup`    |Tailscale status                                                     |
+|`VitalsPopup`       |CPU, RAM, temperatures                                               |
+|`WifiPopup`         |Networks and DNS                                                     |
+
+#### 🎯 Accent picker
+
+Matugen can build a palette from any of the top 4 colors it finds in a wallpaper, but normally always picks the most dominant one. Click the palette icon in Waybar to see all of them and pick one; the choice is saved per wallpaper in `~/.config/matugen/choices.json`, and `matugen/apply.sh` reapplies it every time that wallpaper is set.
+
+-----
+
 ### 🔒 Lockscreen (hyprlock)
 
-Running on **hyprlock** defaults — analog clock, date, user avatar, and password input. Triggered automatically by **hypridle** after idle timeout.
+Configured in `hypr/hyprlock.conf` — analog clock, date, user avatar, and password input. Triggered automatically by **hypridle** after idle timeout.
 
 The idle chain:
 
@@ -155,6 +189,7 @@ Colors stay in sync with your wallpaper theme automatically via `update-sddm-col
 |File         |What it does                                                              |
 |-------------|--------------------------------------------------------------------------|
 |`config.toml`|Matugen settings — wallpaper input path, output targets, color scheme type|
+|`apply.sh`   |Runs matugen with the accent color saved for the current wallpaper        |
 |`templates/` |Template files for every app that receives generated colors               |
 
 #### Apps themed by matugen
@@ -170,18 +205,21 @@ Colors stay in sync with your wallpaper theme automatically via `update-sddm-col
 |`sddm-main.qm`     |SDDM main theme                |
 |`swayosd.css`      |SwayOSD (volume/brightness OSD)|
 |`vscodium-theme`   |VSCodium editor                |
+|`waybar-colors.css`|Waybar status bar              |
+|`yazi.toml`        |Yazi terminal file manager     |
+|`btop.theme`       |btop system monitor            |
+|`mako-config`      |Mako notifications             |
+
 ![IMG_6486](https://github.com/user-attachments/assets/3a389cbe-c1d7-4eb2-abb8-63ec9cb0cee2)
 
 <img width="1920" height="1200" alt="3" src="https://github.com/user-attachments/assets/c83fdc74-4e4d-4573-9808-9d6c5bf21991" />
 <img width="1920" height="1200" alt="2" src="https://github.com/user-attachments/assets/6049f538-35f9-43d1-8f73-77db6b5a05a3" />
 <img width="1920" height="1200" alt="1" src="https://github.com/user-attachments/assets/67e5b209-52fe-4629-ba2c-bdf9ab60566e" />
-|`waybar-colors.css`|Waybar status bar              |
-|`yazi.toml`        |Yazi terminal file manager     |
 
 Change your wallpaper and run:
 
 ```bash
-matugen image /path/to/wallpaper.jpg
+~/.config/matugen/apply.sh /path/to/wallpaper.jpg
 ```
 
 Every app in the list above gets new colors instantly.
@@ -193,7 +231,7 @@ Every app in the list above gets new colors instantly.
 ```bash
 paru -S hyprland hyprpaper hypridle hyprlock waybar sddm matugen \
         rofi-wayland grim slurp playerctl tlp pipewire wireplumber \
-        dunst fuzzel swayosd yazi fastfetch
+        dunst mako fuzzel yazi fastfetch btop aylurs-gtk-shell wlsunset python
 ```
 
 -----
@@ -216,6 +254,9 @@ cp -r waybar/* ~/.config/waybar/
 # Matugen
 cp -r matugen/* ~/.config/matugen/
 
+# AGS popups
+cp -r ags/* ~/.config/ags/
+
 # SDDM (requires sudo)
 sudo cp sddm/sddm.conf /etc/sddm.conf
 sudo cp sddm/sddm.conf.d.conf /etc/sddm.conf.d/sddm.conf
@@ -228,10 +269,10 @@ Reload Hyprland: `SUPER + SHIFT + R`
 ## 🎨 Applying a New Theme
 
 ```bash
-matugen image /path/to/your/wallpaper.jpg
+~/.config/matugen/apply.sh /path/to/your/wallpaper.jpg
 ```
 
-That’s it. Colors regenerate across Waybar, Hyprland, Rofi, Dunst, SDDM, and every other app in the template list.
+Or pick a different accent from the palette icon in Waybar. That’s it. Colors regenerate across Waybar, Hyprland, Rofi, Dunst, SDDM, and every other app in the template list.
 
 -----
 
@@ -246,12 +287,12 @@ hyprland-dotfiles/
 │   ├── wifi-menu.png
 │   └── lockscreen.png
 ├── hypr/
-│   ├── hyprland.conf
-│   ├── hyprland-gui.conf
-│   ├── colors.conf
+│   ├── hyprland.lua
 │   ├── hyprpaper.conf
 │   ├── hypridle.conf
-│   └── scripts/          (12 scripts)
+│   ├── hyprlock.conf
+│   ├── shaders/
+│   └── scripts/          (16 scripts)
 ├── waybar/
 │   ├── config.jsonc
 │   ├── style.css
@@ -259,13 +300,20 @@ hyprland-dotfiles/
 │   ├── iOSBattery.ttf
 │   ├── icons/
 │   ├── sounds/
-│   └── scripts/          (20 scripts)
+│   └── scripts/          (23 scripts)
+├── ags/
+│   ├── app.js
+│   ├── widgets/          (12 popups)
+│   ├── style/
+│   ├── icons/
+│   └── scripts/
 ├── sddm/
 │   ├── sddm.conf
 │   └── sddm.conf.d.conf
 ├── matugen/
 │   ├── config.toml
-│   └── templates/        (11 app templates)
+│   ├── apply.sh
+│   └── templates/        (14 app templates)
 └── README.md
 ```
 
@@ -274,8 +322,8 @@ hyprland-dotfiles/
 ## 🙋 Notes
 
 - Wallpaper symlinks (`current-wallpaper`, `current_wallpaper`) are excluded — they point to local paths that won’t work on other machines
-- Backup files (`config.jsonc.save`, `hyprland.conf.save.1`) are excluded
-- hyprlock runs on default config — no `hyprlock.conf` needed unless you want to customise it
+- Backup files (`*.bak`, `*.save`, `backup-*` folders) and the per-wallpaper `choices.json` are excluded
+- `ClaudeStatsPopup` points at `pidash.example.com` — replace it with your own endpoint or drop the popup
 - If something breaks after cloning, check all dependencies are installed and paths in the configs match your username
 
 -----

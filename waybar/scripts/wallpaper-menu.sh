@@ -27,7 +27,7 @@ sleep 1
 set-sddm-wallpaper "$wall"
 
 # Regenerate matugen colors — wait for it to finish
-matugen image "$wall" --color-index 0
+~/.config/matugen/apply.sh "$wall"
 
 # Wait for colors.css to be written then restart AGS
 sleep 1

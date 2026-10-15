@@ -1,14 +1,119 @@
 {
   "layer": "top",
   "position": "top",
-  "modules-left": ["custom/left-sidebar-toggle"],
-  "modules-center": ["hyprland/workspaces", "custom/screenrecord"],
-  "modules-right": ["custom/battery"],
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["custom/clock"],
+  "modules-right": [
+    "custom/signout",
+    "custom/spacer",
+    "custom/spacer2",
+    "custom/tailscale",
+    "custom/localsend",
+    "custom/claude",
+    "custom/bluetooth",
+    "custom/wifi",
+    "custom/audio",
+    "custom/display",
+    "custom/accent",
+    "custom/kbbattery",
+    "custom/battery",
+    "custom/vitals",
+    "custom/screenrecord"
+  ],
 
-  "custom/left-sidebar-toggle": {
+  "hyprland/workspaces": {
+    "format": "{id}"
+  },
+
+  "custom/clock": {
+    "exec": "~/.config/waybar/scripts/clock.sh",
+    "interval": 1,
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "ags toggle calendar-popup"
+  },
+
+  "custom/signout": {
+    "format": "󰍃",
+    "tooltip": false,
+    "on-click": "ags toggle session-popup"
+  },
+
+  "custom/spacer": {
+    "format": " ",
+    "tooltip": false
+  },
+
+  "custom/spacer2": {
+    "format": " ",
+    "tooltip": false
+  },
+
+  "custom/tailscale": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "ags toggle tailscale-popup"
+  },
+
+
+
+  "custom/localsend": {
     "format": " ",
     "tooltip": false,
-    "on-click": "ags toggle left-sidebar"
+    "on-click": "ags toggle localsend-popup"
+  },
+
+  "custom/claude": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "ags toggle claude-stats-popup"
+  },
+
+  "custom/bluetooth": {
+    "format": "󰂯",
+    "tooltip": false,
+    "on-click": "ags toggle bluetooth-popup"
+  },
+
+  "custom/wifi": {
+    "format": "󰤨",
+    "tooltip": false,
+    "on-click": "ags toggle wifi-popup"
+  },
+
+  "custom/audio": {
+    "exec": "~/.config/waybar/scripts/audio-status.sh",
+    "interval": 1,
+    "signal": 8,
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "ags toggle audio-popup"
+  },
+
+  "custom/display": {
+    "exec": "~/.config/waybar/scripts/display-status.sh",
+    "interval": 1,
+    "signal": 8,
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "ags toggle display-popup"
+  },
+
+  "custom/accent": {
+    "format": "󰏘",
+    "tooltip": false,
+    "on-click": "ags toggle accent-popup"
+  },
+
+  "custom/kbbattery": {
+    "exec": "~/.config/waybar/scripts/kb-battery.sh",
+    "interval": 30,
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": true
   },
 
   "custom/battery": {
@@ -17,7 +122,13 @@
     "return-type": "json",
     "format": "{}",
     "tooltip": false,
-    "on-click": "ags toggle right-sidebar"
+    "on-click": "ags toggle battery-popup"
+  },
+
+  "custom/vitals": {
+    "format": "󰍛",
+    "tooltip": false,
+    "on-click": "ags toggle vitals-popup"
   },
 
   "custom/screenrecord": {

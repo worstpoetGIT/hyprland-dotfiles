@@ -16,4 +16,4 @@ fi
 
 CODEPOINT=$(( BASE + CAPACITY ))
 GLYPH=$(python3 -c "print(chr($CODEPOINT), end='')")
-echo "{\"text\": \"${GLYPH} <span font='SF Pro Display Bold 10'>${CAPACITY}</span>\", \"class\": \"${CLASS}\"}"
+echo "{\"text\": \"${GLYPH}\", \"class\": \"${CLASS}\"}"

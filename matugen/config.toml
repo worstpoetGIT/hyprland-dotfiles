@@ -20,6 +20,14 @@ output_path = "~/.vscode-oss/extensions/matugen-theme/themes/matugen-dark.json"
 [templates.ags-colors]
 input_path = "~/.config/matugen/templates/ags-colors.css"
 output_path = "~/.config/ags/style/colors.css"
+# AGS (waybar's stat modals) doesn't hot-reload this CSS on its own, and
+# Hyprland's active_border only re-reads it via matugen_primary_border()
+# at startup or on `hyprctl reload` -- neither happened automatically
+# before, so window borders and the AGS popups only ever picked up new
+# matugen colors when reload-colors.sh (Super+C) was run by hand. This
+# hook makes every matugen run (manual, wallpaper-menu.sh, or Super+C)
+# refresh both, regardless of entry point.
+post_hook = "pkill -9 -f gjs >/dev/null 2>&1; sleep 0.5; setsid ags run -g 4 /home/worst_poet/.config/ags/app.js --log-file /tmp/ags.log >/dev/null 2>&1 </dev/null & hyprctl reload"
 
 [templates.sidebar-icon]
 input_path = "~/.config/matugen/templates/sidebar-icon.svg"
@@ -32,6 +40,7 @@ output_path = "~/.cache/swayosd-style.css"
 [templates.dunst]
 input_path = "~/.config/matugen/templates/dunstrc"
 output_path = "~/.config/dunst/dunstrc"
+post_hook = "dunstctl reload"
 
 [templates.fastfetch]
 input_path = "~/.config/matugen/templates/fastfetch.jsonc"
@@ -44,3 +53,7 @@ output_path = "~/.cache/sddm-colors.json"
 [templates.yazi]
 input_path = '~/.config/matugen/templates/yazi.toml'
 output_path = '~/.config/yazi/theme.toml'
+
+[templates.btop]
+input_path = "~/.config/matugen/templates/btop.theme"
+output_path = "~/.config/btop/themes/matugen.theme"

@@ -13,7 +13,7 @@ CHOICE=$(get_networks | rofi -dmenu \
     -p "󰤨  WiFi" \
     -theme ~/.config/rofi/glass-theme.rasi \
     -no-custom \
-    -theme-str 'window { width: 400px; } listview { lines: 6; }')
+    -theme-str 'window { width: 400px; border-radius: 12px; } listview { lines: 6; }')
 
 [ -z "$CHOICE" ] && exit
 
@@ -33,7 +33,7 @@ else
         -p "Password for $SSID" \
         -theme ~/.config/rofi/glass-theme.rasi \
         -password \
-        -theme-str 'window { width: 380px; } listview { lines: 0; }')
+        -theme-str 'window { width: 380px; border-radius: 12px; } listview { lines: 0; }')
     [ -z "$PASSWORD" ] && exit
     nmcli dev wifi connect "$SSID" password "$PASSWORD" && \
         notify-send "WiFi" "Connected to $SSID" || \
