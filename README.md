@@ -16,25 +16,7 @@
 <img width="1920" height="1200" alt="5" src="https://github.com/user-attachments/assets/094fa22a-5c8f-448d-b741-5add425ee7d7" />
 
 
-*Clean green-themed desktop with custom dock, workspace indicators, and left/right app panels*
-
-### Sidebar Widgets
-
-<img width="1920" height="1200" alt="1" src="https://github.com/user-attachments/assets/36cda5d2-fda9-41af-823b-b333a040c6fc" />
-
-*Right sidebar showing the clock, calendar, Wi-Fi status, Bluetooth, and power profile — all triggered from Waybar*
-
-### Screenshot Menu
-
-<img width="1865" height="1179" alt="4" src="https://github.com/user-attachments/assets/01788c71-8c54-48f8-9470-fe0e85fb740b" />
-
-*Custom screenshot picker via `screenshot-menu.sh` — choose between Region, Window, or Monitor capture*
-
-### WiFi Menu
-
-<img width="1870" height="1179" alt="2" src="https://github.com/user-attachments/assets/bf314211-eb6a-4dd1-8bdd-277cab74abcb" />
-
-*Rofi-powered WiFi network picker, launched directly from the Waybar WiFi module*
+*Desktop with Waybar and matugen colors from the wallpaper*
 
 ### Lockscreen
 
@@ -71,12 +53,8 @@ Shell and Python scripts wired to keybinds or Waybar buttons.
 |`brightness.sh`           |Controls screen brightness via keyboard shortcuts                    |
 |`dock-resume.sh`          |Restores each monitor's workspace after docking/undocking            |
 |`fan-gaming-watch.sh`     |Raises the ThinkPad fan level while a game is running                |
-|`control-panel.py`        |Launches a quick-access control panel UI                             |
-|`fullscreen-waybar.sh`    |Toggles Waybar visibility when going fullscreen                      |
 |`pseudo-maximize.sh`      |Maximize that keeps Waybar visible, flush to the other edges         |
-|`restore-wallpaper.sh`    |Restores the current wallpaper after a reload or crash               |
 |`screenrecord-toggle.sh`  |Starts and stops screen recording                                    |
-|`screenshot-menu.sh`      |Rofi-based screenshot picker — Region, Window, or Monitor            |
 |`session-start.sh`        |Runs on Hyprland startup — launches tray apps, sets environment, etc.|
 |`set-warmth.sh`           |Color temperature for the laptop panel only (wlsunset)               |
 |`set-white-point.sh`      |Turns Reduce White Point on/off (used by the AGS Display popup)      |
@@ -89,16 +67,16 @@ Shell and Python scripts wired to keybinds or Waybar buttons.
 
 ### 📊 Waybar (`waybar/`)
 
-A heavily customised status bar with dynamic modules and its own script collection.
+A minimal status bar: workspaces on the left, clock in the center, and a row of icons on the right. Most icons open an AGS popup (below) instead of a Rofi menu.
 
-|File                      |What it does                                                       |
-|--------------------------|-------------------------------------------------------------------|
-|`config.jsonc`            |Main Waybar layout — defines all modules, positions, and settings  |
-|`style.css`               |Full CSS styling — colours, fonts, spacing, hover effects          |
-|`colors.css`              |Color variables kept separate so matugen can overwrite them cleanly|
-|`iOSBattery.ttf`          |Custom font for iOS-style battery icons in the battery module      |
-|`sounds/charging.mp3`     |Plays when the charger is plugged in                               |
-|`icons/sidebar-toggle.svg`|Custom SVG icon for the sidebar toggle button                      |
+|File          |What it does                                                       |
+|--------------|-------------------------------------------------------------------|
+|`config.jsonc`|Main Waybar layout — defines all modules, positions, and settings  |
+|`style.css`   |Full CSS styling — colours, fonts, spacing, hover effects          |
+|`colors.css`  |Color variables kept separate so matugen can overwrite them cleanly|
+|`iOSBattery.ttf`|Custom font for iOS-style battery icons in the battery module    |
+
+**Modules (right side):** sign out · Tailscale · LocalSend · Claude usage · Bluetooth · Wi-Fi · audio · display · accent picker · keyboard battery · battery · vitals · screen-record indicator
 
 #### Waybar Scripts (`waybar/scripts/`)
 
@@ -107,26 +85,12 @@ A heavily customised status bar with dynamic modules and its own script collecti
 |`accent-dot.py`            |Backend for the accent picker — lists matugen's source colors for the current wallpaper and applies the chosen one|
 |`audio-status.sh`          |Volume icon; shows the level for ~2s after a volume key press      |
 |`battery.sh`               |Outputs battery percentage and status                              |
-|`batterypng.py`            |Generates a battery icon as PNG using the custom font              |
-|`build_battery_font_ff.py` |Builds the battery font (Firefox-compatible)                       |
-|`build_colr_battery.py`    |Builds a colour-layered battery icon                               |
-|`bluetooth.sh`             |Shows Bluetooth status and connected device name                   |
 |`clock.sh`                 |Center clock with date and a second (India) time zone              |
 |`display-status.sh`        |Brightness icon; shows the level for ~2s after a brightness key press|
-|`gpu-status.sh`            |Shows current GPU usage and temperature                            |
 |`kb-battery.sh`            |Battery level of the wireless keyboard                             |
-|`launch.sh`                |Generic launcher used by several Waybar buttons                    |
-|`media.sh`                 |Displays currently playing media via playerctl                     |
-|`power-profile-menu.sh`    |Rofi menu to switch power profiles (performance, balanced, battery)|
-|`record.sh`                |Handles recording state for the recording indicator module         |
+|`launch.sh`                |Starts/restarts Waybar                                             |
 |`screenrecord-indicator.sh`|Shows a live dot in Waybar when screen recording is active         |
-|`screenshot.sh`            |Triggers a screenshot directly from the bar                        |
-|`tlp-cycle.sh`             |Cycles through TLP power profiles                                  |
-|`tlp-profile.sh`           |Shows the current TLP profile                                      |
-|`volume-icon.sh`           |Outputs the right volume icon depending on level and mute state    |
-|`wallpaper-menu.sh`        |Opens the wallpaper picker from the bar                            |
-|`wifi-menu.sh`             |Rofi-based WiFi network picker                                     |
-|`window-title.sh`          |Outputs the active window title                                    |
+|`wallpaper-menu.sh`        |Wallpaper picker; reruns matugen on change                         |
 
 -----
 
@@ -143,7 +107,7 @@ A heavily customised status bar with dynamic modules and its own script collecti
 |`CalendarPopup`     |Calendar from the clock                                              |
 |`ClaudeStatsPopup`  |Claude Code usage from a self-hosted dashboard (set your own URL)    |
 |`DisplayPopup`      |Brightness, warmth, Reduce White Point                               |
-|`LocalSendPopup`    |Send files to LocalSend devices (`scripts/localsend_daemon.py`)      |
+|`LocalSendPopup`    |Send files to LocalSend devices                                      |
 |`SessionPopup`      |Lock / logout / reboot / shutdown                                    |
 |`TailscalePopup`    |Tailscale status                                                     |
 |`VitalsPopup`       |CPU, RAM, temperatures                                               |
@@ -208,7 +172,6 @@ Colors stay in sync with your wallpaper theme automatically via `update-sddm-col
 |`waybar-colors.css`|Waybar status bar              |
 |`yazi.toml`        |Yazi terminal file manager     |
 |`btop.theme`       |btop system monitor            |
-|`mako-config`      |Mako notifications             |
 
 ![IMG_6486](https://github.com/user-attachments/assets/3a389cbe-c1d7-4eb2-abb8-63ec9cb0cee2)
 
@@ -230,8 +193,8 @@ Every app in the list above gets new colors instantly.
 
 ```bash
 paru -S hyprland hyprpaper hypridle hyprlock waybar sddm matugen \
-        rofi-wayland grim slurp playerctl tlp pipewire wireplumber \
-        dunst mako fuzzel yazi fastfetch btop aylurs-gtk-shell wlsunset python
+        grim slurp playerctl pipewire wireplumber \
+        fuzzel yazi fastfetch btop aylurs-gtk-shell wlsunset python
 ```
 
 -----
@@ -280,27 +243,19 @@ Or pick a different accent from the palette icon in Waybar. That’s it. Colors 
 
 ```
 hyprland-dotfiles/
-├── assets/
-│   ├── desktop.png
-│   ├── sidebar.png
-│   ├── screenshot-menu.png
-│   ├── wifi-menu.png
-│   └── lockscreen.png
 ├── hypr/
 │   ├── hyprland.lua
 │   ├── hyprpaper.conf
 │   ├── hypridle.conf
 │   ├── hyprlock.conf
 │   ├── shaders/
-│   └── scripts/          (16 scripts)
+│   └── scripts/          (12 scripts)
 ├── waybar/
 │   ├── config.jsonc
 │   ├── style.css
 │   ├── colors.css
 │   ├── iOSBattery.ttf
-│   ├── icons/
-│   ├── sounds/
-│   └── scripts/          (23 scripts)
+│   └── scripts/          (9 scripts)
 ├── ags/
 │   ├── app.js
 │   ├── widgets/          (12 popups)
@@ -313,7 +268,7 @@ hyprland-dotfiles/
 ├── matugen/
 │   ├── config.toml
 │   ├── apply.sh
-│   └── templates/        (14 app templates)
+│   └── templates/        (13 app templates)
 └── README.md
 ```
 
