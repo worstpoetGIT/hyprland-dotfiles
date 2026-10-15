@@ -260,8 +260,7 @@ hyprland-dotfiles/
 │   ├── app.js
 │   ├── widgets/          (12 popups)
 │   ├── style/
-│   ├── icons/
-│   └── scripts/
+│   └── icons/
 ├── sddm/
 │   ├── sddm.conf
 │   └── sddm.conf.d.conf
