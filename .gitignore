@@ -1,0 +1,5 @@
+# Local backups and editor saves
+*.bak*
+*.save*
+backup-*/
+__pycache__/
