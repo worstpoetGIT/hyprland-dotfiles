@@ -13,7 +13,7 @@
 
 ### Desktop
 
-<img width="1920" height="1200" alt="5" src="https://github.com/user-attachments/assets/094fa22a-5c8f-448d-b741-5add425ee7d7" />
+<img width="1920" height="1080" alt="desktop" src="screenshots/desktop.png" />
 
 
 *Desktop with Waybar and matugen colors from the wallpaper*
