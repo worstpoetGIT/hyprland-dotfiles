@@ -18,11 +18,17 @@
 
 *Desktop with Waybar and matugen colors from the wallpaper*
 
-### Lockscreen
+### Fastfetch
 
-<img width="1920" height="1200" alt="3" src="https://github.com/user-attachments/assets/0a9e7ec4-f2c0-47be-88c6-c9d283b5c0ec" />
+<img width="1920" height="1080" alt="fastfetch" src="screenshots/fastfetch.png" />
 
-*hyprlock on default config — analog clock, date, user avatar, and password field. Triggered automatically by hypridle after idle timeout*
+*fastfetch on the ThinkPad (left) and over SSH on the Raspberry Pi 5 homelab (right)*
+
+### Waybar
+
+<img width="1920" height="30" alt="waybar" src="screenshots/waybar.png" />
+
+*Workspaces on the left, clock in the center, status icons on the right*
 
 -----
 
@@ -116,20 +122,6 @@ A minimal status bar: workspaces on the left, clock in the center, and a row of 
 #### 🎯 Accent picker
 
 Matugen can build a palette from any of the top 4 colors it finds in a wallpaper, but normally always picks the most dominant one. Click the palette icon in Waybar to see all of them and pick one; the choice is saved per wallpaper in `~/.config/matugen/choices.json`, and `matugen/apply.sh` reapplies it every time that wallpaper is set.
-
------
-
-### 🔒 Lockscreen (hyprlock)
-
-Configured in `hypr/hyprlock.conf` — analog clock, date, user avatar, and password input. Triggered automatically by **hypridle** after idle timeout.
-
-The idle chain:
-
-```
-Idle detected → Screen dims → hyprlock activates → Screen suspends
-```
-
-Configured inside `hypr/hypridle.conf`.
 
 -----
 
